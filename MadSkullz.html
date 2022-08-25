@@ -1,0 +1,60 @@
+<html>
+  <title>MadSkullz NFT Viewer</title>
+  <head>
+  <script>
+    const base_url = "https://cdn.madskullz.io/madskullz/metadata/";
+
+    function fetch_nft_attr(token_id) {
+      let url = base_url + token_id + ".json";
+      let http_request = new XMLHttpRequest();
+      http_request.open("GET", url, true);
+      http_request.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+          let nft_obj = JSON.parse(this.responseText);
+          document.getElementById("rarity").innerHTML = "Rarity: " + nft_obj["rarity"];
+          document.getElementById("rank").innerHTML = "Rank: " + nft_obj["rank"];
+          document.getElementById("img").setAttribute("src", nft_obj["image"]);
+
+          let attr = "";
+          nft_obj["attributes"].forEach(function(item, index, array) {
+            attr += item["trait_type"] + ", " +  item["value"];
+            if (item["rarity"] != undefined) {
+              attr += ", " +  item["rarity"];
+            }
+            attr += "\n";
+          });
+          document.getElementById("attr").innerHTML = attr;
+        }
+      };
+      http_request.send();
+    }
+
+    function get_nft_attr() {
+        let token_id = document.getElementById("token-id").value;
+        fetch_nft_attr(token_id);
+    }
+	
+	window.addEventListener("load", function() {
+		document.getElementById("token-id").addEventListener("keydown", function(evt) {
+			if (evt.keyCode == 13) {
+				get_nft_attr();
+			}
+		});
+	});
+	
+  </script>
+  </head>
+
+  <body>
+    <h2>MadSkullz</h2><br>
+
+    <input id="token-id">
+    <button onclick="get_nft_attr();">Show NFT</button>
+    <br>
+    <h3 id="rarity">Rarity: </h3>
+    <h3 id="rank">Rank:</h3>
+    <image id="img" style="height:256px; width:256px;"></image>
+
+    <textarea id="attr" style="height:256px; width:256px;"></textarea>
+  </body>
+</html>
