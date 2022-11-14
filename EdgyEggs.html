@@ -3,46 +3,45 @@
 <html>
   <title>Edgy Eggs NFT Viewer</title>
   <head>
-  <script>
-      const base_url = "http://metadata.edgyeggs.wtf/";
+    <script>
+      const base_url = "https://s3.wasabisys.com/metadata.edgyeggs.wtf/";
 
-    function fetch_nft_attr(token_id) {
-      let url = base_url + token_id + ".json";
-      let http_request = new XMLHttpRequest();
-      http_request.open("GET", url, true);
-      http_request.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-          let nft_obj = JSON.parse(this.responseText);
-      document.getElementById("name").innerHTML = "ID #" + token_id + ": " + nft_obj["name"];
-          document.getElementById("rarity").innerHTML = "Rarity: " + nft_obj["Rarity"];
-          document.getElementById("rank").innerHTML = "Rank: " + nft_obj["Rank"];
-          document.getElementById("score").innerHTML = "Score: " + nft_obj["Score"];
-          document.getElementById("img").setAttribute("src", nft_obj["image"]);
-
-          let attr = "";
-          nft_obj["attributes"].forEach(function(item, index, array) {
-            attr += item["trait_type"] + ": " +  item["value"];
-            attr += "\n";
-          });
-          document.getElementById("attr").innerHTML = attr;
-        }
-      };
-      http_request.send();
-    }
-
-    function get_nft_attr() {
-        let token_id = document.getElementById("token-id").value;
-        fetch_nft_attr(token_id);
-    }
-    window.addEventListener("load", function() {
-      document.getElementById("token-id").addEventListener("keydown", function(evt) {
-        if (evt.keyCode == 13) {
-          get_nft_attr();
-        }
+      function fetch_nft_attr(token_id) {
+        let url = base_url + token_id + ".json";
+        let http_request = new XMLHttpRequest();
+        http_request.open("GET", url, true);
+        http_request.onreadystatechange = function(){
+          if (this.readyState == 4 && this.status == 200) {
+            let nft_obj = JSON.parse(this.responseText);
+            document.getElementById("name").innerHTML = "ID #" + token_id + ": " + nft_obj["name"];
+            document.getElementById("rarity").innerHTML = "Rarity: " + nft_obj["Rarity"];
+            document.getElementById("rank").innerHTML = "Rank: " + nft_obj["Rank"];
+            document.getElementById("score").innerHTML = "Score: " + nft_obj["Score"];
+            document.getElementById("img").setAttribute("src", nft_obj["image"]);
+  
+            let attr = "";
+            nft_obj["attributes"].forEach(function(item, index, array) {
+              attr += item["trait_type"] + ": " +  item["value"];
+              attr += "\n";
+            });
+            document.getElementById("attr").innerHTML = attr;
+          }
+        };
+        http_request.send();
+      }
+  
+      function get_nft_attr() {
+          let token_id = document.getElementById("token-id").value;
+          fetch_nft_attr(token_id);
+      }
+      window.addEventListener("load", function() {
+        document.getElementById("token-id").addEventListener("keydown", function(evt) {
+          if (evt.keyCode == 13) {
+            get_nft_attr();
+          }
+        });
       });
-    });
-
-  </script>
+    </script>
   </head>
 
   <body>
