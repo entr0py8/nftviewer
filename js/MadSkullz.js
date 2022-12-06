@@ -15,7 +15,6 @@ window.addEventListener("load", function() {
 function get_nft_attr() {
     let token_elem = document.getElementById("token-id");
     let token_id = pad_zeros(token_elem.value);
-    // document.getElementById("token-id").value = token_id;
     document.getElementById("skullz-id").innerText = token_id;
     fetch_nft_attr(token_id);
 }
@@ -58,21 +57,17 @@ function fetch_nft_attr(token_id) {
             td.classList.add("traits-cell", "right");
             td.appendChild(document.createTextNode(trait_value));
 
-            // attr += item["trait_type"] + ", " +  item["value"];
             if (item["rarity"] != undefined) {
-                // attr += ", " +  item["rarity"];
                 td = tr.insertCell();
                 td.classList.add("traits-cell");
                 td.classList.add("rarity-" + item["rarity"].toLowerCase());
                 td.appendChild(document.createTextNode(item["rarity"]));
-console.log(trait_value + ":" + SKULLZ_TRAITS[trait_type][trait_value]["count"]);
+
                 const percentage = (100.0 * SKULLZ_TRAITS[trait_type][trait_value]["count"] / NFT_count).toFixed(2);
                 const percentage2 = (100.0 / SKULLZ_TRAITS[trait_type][trait_value]["count"]).toFixed(1);
-console.log(`${percentage2}%, ${percentage2}%`);
                 td = tr.insertCell();
                 td.classList.add("traits-cell", "right");
                 td.appendChild(document.createTextNode(`${percentage2}%`));
-
                 td = tr.insertCell();
                 td.classList.add("traits-cell", "right");
                 td.appendChild(document.createTextNode(`${percentage}%`));
