@@ -1,0 +1,106 @@
+body {
+    max-width: 860px !important;
+    margin: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.flex {
+    display: flex
+}
+
+.right {
+    text-align: right;
+}
+.center {
+    text-align: center;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.img-width {
+    width: 366px;
+}
+
+.round-6 {
+    border-radius: 6px !important;
+}
+
+input {
+    border: 1px solid #bebebe;
+    border-radius: 3px !important;
+}
+
+.grey-button {
+    border: none;
+    text-align: center;
+    background-color: #e7e7e7;
+    padding: 8px;
+}
+
+.rarity-box {
+    margin: 20px 0px 20px 0px;
+    padding: 10px;
+}
+
+.rarity {
+    padding: 8px;
+}
+
+.rarity-great {
+    background-color: rgb(0 136 71);
+    color: white;
+}
+
+.rarity-rare {
+    background-color: rgb(52 109 219);
+    color: white;
+}
+
+.rarity-epic {
+    background-color: rgb(115 92 255);
+    color: white;
+}
+
+.rarity-creatorz,
+.rarity-forgottenz,
+.rarity-legendary {
+    background-color: rgb(255 209 57);
+}
+
+.rank {
+    border: 1px solid #bebebe;
+}
+
+.skullz-img {
+    width: 366px;
+    height: 366px;
+    padding-right: 10px;
+}
+
+.traits-table {
+    /* border-collapse: collapse; */
+    background-color: #e9e3e3;
+    /* padding-left: 10px; */
+}
+
+.traits-header {
+    background-color: #d3cfcf;
+}
+
+.traits-table th, .traits-table tr {
+    border-top: 1px solid #bebebe;
+    border-bottom: 1px solid #bebebe;
+}
+
+.traits-cell {
+    /* margin-right: 10px; */
+    padding: 5px;
+}
+
+.skullz-textarea {
+    height:250px;
+    width:250px;
+    resize:none;
+}
