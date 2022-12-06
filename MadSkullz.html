@@ -1,60 +1,45 @@
+
+<!DOCTYPE HTML>
 <html>
-  <title>MadSkullz NFT Viewer</title>
   <head>
-  <script>
-    const base_url = "https://cdn.madskullz.io/madskullz/metadata/";
-
-    function fetch_nft_attr(token_id) {
-      let url = base_url + token_id + ".json";
-      let http_request = new XMLHttpRequest();
-      http_request.open("GET", url, true);
-      http_request.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-          let nft_obj = JSON.parse(this.responseText);
-          document.getElementById("rarity").innerHTML = "Rarity: " + nft_obj["rarity"];
-          document.getElementById("rank").innerHTML = "Rank: " + nft_obj["rank"];
-          document.getElementById("img").setAttribute("src", nft_obj["image"]);
-
-          let attr = "";
-          nft_obj["attributes"].forEach(function(item, index, array) {
-            attr += item["trait_type"] + ", " +  item["value"];
-            if (item["rarity"] != undefined) {
-              attr += ", " +  item["rarity"];
-            }
-            attr += "\n";
-          });
-          document.getElementById("attr").innerHTML = attr;
-        }
-      };
-      http_request.send();
-    }
-
-    function get_nft_attr() {
-        let token_id = document.getElementById("token-id").value;
-        fetch_nft_attr(token_id);
-    }
-	
-	window.addEventListener("load", function() {
-		document.getElementById("token-id").addEventListener("keydown", function(evt) {
-			if (evt.keyCode == 13) {
-				get_nft_attr();
-			}
-		});
-	});
-	
-  </script>
+    <title>MadSkullz NFT Viewer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="css/MadSkullz.css">
+    <script src="js/MadSkullz.js"></script>
+    <script src="js/SkullzTraits.js"></script>
   </head>
 
   <body>
-    <h2>MadSkullz</h2><br>
+      <center>
+        <h2>MadSkullz Viewer</h2>
+        <input id="token-id" placeholder="Input Skullz ID" value="2691">
+        <button class="grey-button" onclick="get_nft_attr();">Show NFT</button>
+      </center>
 
-    <input id="token-id">
-    <button onclick="get_nft_attr();">Show NFT</button>
-    <br>
-    <h3 id="rarity">Rarity: </h3>
-    <h3 id="rank">Rank:</h3>
-    <image id="img" style="height:256px; width:256px;"></image>
+      <div class="flex">
+        <h3 class="rarity-box img-width center">MadSkullz #<span id="skullz-id"></span></h3>
+        <div class="rarity-box">Rarity <span id="rarity" class="rarity round-6">-</span></div>
+        <div class="rarity-box rank round-6">Rank #<span id="rank">-</span></div>
+      </div>
 
-    <textarea id="attr" style="height:256px; width:256px;"></textarea>
+      <div class="flex">
+        <image id="img" class="skullz-img round-6" aria-placeholder="Skullz Image"></image>
+        <!-- <textarea id="attr" class="skullz-textarea"></textarea> -->
+        <table id="traits-table" class="traits-table round-6">
+          <thead>
+            <tr class="traits-header">
+              <td class="traits-cell">Type</td>
+              <td class="traits-cell right">Value</td>
+              <td class="traits-cell ">Rarity</td>
+              <td class="traits-cell right">My %</td>
+              <td class="traits-cell right">Trait %</td>
+            </tr>
+          </thead>
+          <tbody id="skullz-traits" >
+          </tbody>
+
+        </table>
+      </div>
+
   </body>
 </html>
