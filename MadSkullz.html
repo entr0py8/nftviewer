@@ -4,28 +4,42 @@
   <head>
     <title>MadSkullz NFT Viewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="css/MadSkullz.css">
+    <link rel="stylesheet" href="css/MadSkullz.min.css">
     <script src="js/SkullzData.js"></script>
-    <script src="js/MadSkullz.js"></script>
+    <script src="js/SkullzIDs.js"></script>
     <script src="js/SkullzTraits.js"></script>
+    <script src="js/MadSkullz.min.js"></script>
   </head>
 
   <body>
-      <center>
-        <h2>MadSkullz Viewer</h2>
-        <input id="token-id" placeholder="Input Skullz ID">
-        <button class="grey-button" onclick="get_nft_attr();">Show NFT</button>
-      </center>
+    <h2 class="center">MadSkullz Viewer</h2>
+    <div>
+      <div class="flex center-content">
+        <input id="token-id" class="search-input" placeholder="Input Skullz-ID (1234) or Token-ID (1234t or t1234)">
+        <button class="search-button" onclick="get_nft_attr();">Show NFT</button>
+      </div>
+      <div id="token-unrevealed" class="token-warn center hidden">Token #<span id="missing-onez"></span> is still hidden in The Missing Onez <span><img src="./images/madskullz.png"></span></div>
+    </div>
 
+    <div id="skulz-info" class="hidden">
       <div class="flex">
-        <h3 class="rarity-box img-width center">MadSkullz #<span id="skullz-id"></span></h3>
+        <div>
+          <h3 class="rarity-box img-width center">MadSkullz #<span id="skullz-id"></span></h3>
+          <div class="token-index-box">
+            Token <span id="token-index">#</span>
+            <a id="snowtrace-url" target="_blank" href="#"><img width="16" height="16" src="./images/snowtrace.png"></a>
+            <a id="kalao-url" target="_blank" href="#"><img width="16" height="16" src="./images/kalao.png"></a>
+            <a id="joepegs-url" target="_blank" href="#"><img width="16" height="16" src="./images/joepegs.png"></a>
+            <a id="opensea-url" target="_blank" href="#"><img width="16" height="16" src="./images/opensea.png"></a>
+            <a id="nftrade-url" target="_blank" href="#"><img width="16" height="16" src="./images/nftrade.png"></a>
+          </div>
+        </div>
         <div class="rarity-box">Rarity <span id="rarity" class="rarity round-6">-</span></div>
         <div class="rarity-box rank round-6">Rank #<span id="rank">-</span></div>
       </div>
 
       <div class="flex">
         <image id="img" class="skullz-img round-6" aria-placeholder="Skullz Image"></image>
-        <!-- <textarea id="attr" class="skullz-textarea"></textarea> -->
         <table id="traits-table" class="traits-table round-6">
           <thead>
             <tr class="traits-header">
@@ -39,8 +53,8 @@
           <tbody id="skullz-traits"></tbody>
         </table>
       </div>
+    </div>
 
-      <div id="skullz-list" class="flex-wrap skullz-list">
-      </div>
+    <div id="skullz-list" class="flex-wrap skullz-list"></div>
   </body>
 </html>
