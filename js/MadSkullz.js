@@ -1,27 +1,97 @@
-// NFT Viewer for MadSkullz
+// NFT Viewer for @MadSkullz_NFT
 // Author: @entropy_8_
 
 const base_url = "https://cdn.madskullz.io/madskullz/metadata/";
 const NFT_count = 6666;
 
 window.addEventListener("load", function () {
-  document.getElementById("token-id").addEventListener("keydown", function (evt) {
+  const search_input_elem = document.getElementById("token-id");
+  search_input_elem.focus();
+  search_input_elem.addEventListener("keydown", function (evt) {
     if (evt.key == "Enter") {
-      get_nft_attr();
+      get_nft_attr(true);
     }
   });
 });
 
-function get_nft_attr() {
+function get_nft_attr(reset_list=false) {
+
+  let skullz_id = undefined;
+  let token_index = undefined;
+
   let token_elem = document.getElementById("token-id");
-  const token_id = pad_zeros(token_elem.value);
-  document.getElementById("skullz-id").innerText = token_id;
-  document.getElementById("skullz-list").innerHTML = "";
-  fetch_nft_attr(token_id);
+  let token_info = token_elem.value;
+
+  let tsearch1 = token_info.match(/t\d{1,4}/i);
+  let tsearch2 = token_info.match(/\d{1,4}t/i);
+  let is_token_index = tsearch1 || tsearch2;
+  if (tsearch1) {
+    token_info = tsearch1[0].replace(/\D/g, "");
+  }
+  else if (tsearch2) {
+    token_info = tsearch2[0].replace(/\D/g, "");
+  }
+
+  document.getElementById("token-unrevealed").classList.add("hidden");
+  if (is_token_index) {
+    token_index = trim_zeros(token_info);
+    if (SKULLZ_IDS[token_index] != undefined) {
+      skullz_id = pad_zeros(SKULLZ_IDS[token_index]);
+    }
+    else {
+      document.getElementById("missing-onez").innerText = `${token_index}`;
+      document.getElementById("token-unrevealed").classList.remove("hidden");
+    }
+  }
+  else {
+    token_info = token_info.replace(/\D/g, "");
+    skullz_id = pad_zeros(token_info);
+    token_index = search_token_index(skullz_id);
+  }
+
+  const token_index_elem = document.getElementById("token-index");
+  if (skullz_id != undefined) {
+    document.getElementById("skullz-id").innerText = skullz_id;
+    if (reset_list) {
+      document.getElementById("skullz-list").innerHTML = "";
+    }
+    fetch_nft_attr(skullz_id);
+    document.getElementById("skulz-info").classList.remove("hidden");
+    document.getElementById("skullz-list").classList.remove("hidden");
+
+    if (token_index != -1 ) {
+      token_index_elem.innerText = `#${token_index}`;
+      document.getElementById("snowtrace-url").href= `https://snowtrace.io/token/0x3025c5c2aa6eb7364555aac0074292195701bbd6?a=${token_index}`;
+      document.getElementById("kalao-url").href= `https://marketplace.kalao.io/nft/0x3025c5c2aa6eb7364555aac0074292195701bbd6_${token_index}`;
+      document.getElementById("joepegs-url").href= `https://joepegs.com/item/0x3025c5c2aa6eb7364555aac0074292195701bbd6/${token_index}`;
+      document.getElementById("opensea-url").href= `https://opensea.io/assets/avalanche/0x3025c5c2aa6eb7364555aac0074292195701bbd6/${token_index}`;
+      document.getElementById("nftrade-url").href= `https://nftrade.com/assets/avalanche/0x3025c5c2aa6eb7364555aac0074292195701bbd6/${token_index}`;
+      document.getElementById("snowtrace-url").hidden = false;
+      document.getElementById("kalao-url").hidden = false;
+      document.getElementById("joepegs-url").hidden = false;
+      document.getElementById("opensea-url").hidden = false;
+      document.getElementById("nftrade-url").hidden = false;
+    }
+    else {
+      console.log(`Token of Skullz #${skullz_id} is still hidden in The Missing Onez.`)
+      token_index_elem.innerText = "Unrevealed (Missing Onez)";
+      document.getElementById("snowtrace-url").hidden = true;
+      document.getElementById("kalao-url").hidden = true;
+      document.getElementById("joepegs-url").hidden = true;
+      document.getElementById("opensea-url").hidden = true;
+      document.getElementById("nftrade-url").hidden = true;
+    }
+  }
+  else {
+    console.log(`Token #${token_index} is still hidden in The Missing Onez.`);
+    document.getElementById("skulz-info").classList.add("hidden");
+    document.getElementById("skullz-list").classList.add("hidden");
+  }
+
 }
 
-function fetch_nft_attr(token_id) {
-  const url = base_url + token_id + ".json";
+function fetch_nft_attr(skullz_id) {
+  const url = base_url + skullz_id + ".json";
   let http_request = new XMLHttpRequest();
   http_request.open("GET", url, true);
   http_request.onreadystatechange = function () {
@@ -92,6 +162,15 @@ function fetch_nft_attr(token_id) {
   http_request.send();
 }
 
+function search_token_index(skullz_id) {
+  for (const token_index in SKULLZ_IDS) {
+    if (SKULLZ_IDS[token_index] == skullz_id) {
+      return token_index;
+    }
+  }
+  return -1;
+}
+
 function search_traits(trait) {
   let skullz_list = [];
   const trait_type = Object.keys(trait);
@@ -130,7 +209,8 @@ function show_traits_list(trait_value, trait_rarity, skullz_list) {
       const token_id = pad_zeros(skullz_id);
       document.getElementById("token-id").value = token_id;
       document.getElementById("skullz-id").innerText = token_id;
-      fetch_nft_attr(token_id);
+      // fetch_nft_attr(token_id);
+      get_nft_attr();
       document.getElementById("skullz-id").scrollIntoView();
     });
   });
@@ -146,4 +226,8 @@ function set_selected(item) {
 
 function pad_zeros(token_id) {
   return ('0000' + token_id).slice(-4);
+}
+
+function trim_zeros(token_id) {
+  return token_id.replace(/^0+/, "");
 }

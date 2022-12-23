@@ -7,6 +7,9 @@ body {
 .flex {
     display: flex
 }
+.center-content {
+    justify-content: center;
+}
 
 .right {
     text-align: right;
@@ -30,12 +33,20 @@ body {
     border-radius: 6px !important;
 }
 
-input {
+.search-input {
     border: 1px solid #bebebe;
     border-radius: 3px !important;
+    margin-left: 92px;
+    margin-right: 5px;
+    width: 42%;
+    font-size: 16px !important;
+}
+.search-input:focus {
+    font-size: 16px !important;
 }
 
-.grey-button {
+.search-button {
+    font-size: 16px;
     border: none;
     text-align: center;
     background-color: #e7e7e7;
@@ -85,6 +96,7 @@ input {
 .traits-table {
     background-color: #e9e3e3;
     border-spacing: 0;
+    min-width: 50%;
 }
 
 .traits-header {
@@ -98,6 +110,26 @@ input {
 
 .traits-cell {
     padding: 5px;
+}
+
+.token-index-box {
+    margin-top: -25px;
+    padding-left: 7.2em;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.token-index-box a {
+    padding-left: 5px;
+}
+
+.token-warn {
+    margin-top: 5px;
+    color:#827d7d;
+}
+
+.hidden {
+    display: none !important;
 }
 
 .skullz-textarea {
