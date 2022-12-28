@@ -12,6 +12,19 @@ window.addEventListener("load", function () {
       get_nft_attr(true);
     }
   });
+
+  const theme_btn = document.getElementById("theme-btn");
+  theme_btn.addEventListener("click", function() {
+    if (document.body.classList.contains("dark")) {
+      theme_btn.src = "./images/dark.svg";
+      document.body.classList.remove("dark");
+    }
+    else {
+      theme_btn.src = "./images/light.svg";
+      document.body.classList.add("dark");
+    }
+  })
+
 });
 
 function get_nft_attr(reset_list=false) {
@@ -53,11 +66,12 @@ function get_nft_attr(reset_list=false) {
   if (skullz_id != undefined) {
     document.getElementById("skullz-id").innerText = skullz_id;
     if (reset_list) {
+      document.getElementById("skullz-count-header").innerHTML = "";
       document.getElementById("skullz-list").innerHTML = "";
     }
     fetch_nft_attr(skullz_id);
-    document.getElementById("skulz-info").classList.remove("hidden");
-    document.getElementById("skullz-list").classList.remove("hidden");
+    document.getElementById("skullz-info").classList.remove("hidden");
+    document.getElementById("skullz-list-box").classList.remove("hidden");
 
     if (token_index != -1 ) {
       token_index_elem.innerText = `#${token_index}`;
@@ -65,6 +79,7 @@ function get_nft_attr(reset_list=false) {
       document.getElementById("kalao-url").href= `https://marketplace.kalao.io/nft/0x3025c5c2aa6eb7364555aac0074292195701bbd6_${token_index}`;
       document.getElementById("joepegs-url").href= `https://joepegs.com/item/0x3025c5c2aa6eb7364555aac0074292195701bbd6/${token_index}`;
       document.getElementById("opensea-url").href= `https://opensea.io/assets/avalanche/0x3025c5c2aa6eb7364555aac0074292195701bbd6/${token_index}`;
+      document.getElementById("campfire-url").href= `https://campfire.exchange/collections/0x3025c5c2aa6eb7364555aac0074292195701bbd6/${token_index}`;
       document.getElementById("nftrade-url").href= `https://nftrade.com/assets/avalanche/0x3025c5c2aa6eb7364555aac0074292195701bbd6/${token_index}`;
       document.getElementById("snowtrace-url").hidden = false;
       document.getElementById("kalao-url").hidden = false;
@@ -84,8 +99,8 @@ function get_nft_attr(reset_list=false) {
   }
   else {
     console.log(`Token #${token_index} is still hidden in The Missing Onez.`);
-    document.getElementById("skulz-info").classList.add("hidden");
-    document.getElementById("skullz-list").classList.add("hidden");
+    document.getElementById("skullz-info").classList.add("hidden");
+    document.getElementById("skullz-list-box").classList.add("hidden");
   }
 
 }
@@ -128,9 +143,9 @@ function fetch_nft_attr(skullz_id) {
         td.appendChild(document.createTextNode(trait_type));
 
         td = tr.insertCell();
-        td.classList.add("traits-cell", "right", "trait-value");
+        td.classList.add("traits-cell", "trait-value", "right", "padding-right-075");
         let trait_value_obj = document.createElement("div");
-        trait_value_obj.classList.add("center", "underline");
+
         trait_value_obj.innerText = trait_value;
         td.appendChild(trait_value_obj);
         trait_value_obj.addEventListener("click", function() {
@@ -191,25 +206,21 @@ function show_traits_list(trait_value, trait_rarity, skullz_list) {
   let skullz_list_elem = document.getElementById("skullz-list");
   skullz_list_elem.innerHTML = "";
   const trait_class = "rarity-" + trait_rarity.toLowerCase();
-  let skullz_count_elem = document.createElement("div");
-  skullz_count_elem.classList.add("flex", "skullz-count-header");
-  skullz_count_elem.innerHTML = `Total Skullz with <span class="${trait_class} rarity">${trait_value}</span>: ${skullz_list.length}`;
-  skullz_list_elem.appendChild(skullz_count_elem);
+  let skullz_count_elem = document.getElementById("skullz-count-header"); 
+  skullz_count_elem.innerHTML = `Total Skullz with <span class="${trait_class} rarity">${trait_value}</span>: <span class="counter">${skullz_list.length}</span>`;
 
   skullz_list.forEach(function(skullz_id, index, array) {
     const skullz_obj = SKULLZ_DATA[skullz_id];
     let skullz_elem = document.createElement("div");
     skullz_elem.classList.add("skullz-list-item", "center");
     const rarity_class = "rarity-" + skullz_obj["rarity"].toLowerCase();
-    skullz_elem.innerHTML = `<div class="${rarity_class} rank">${skullz_obj["rank"]}</div> <span class="underline">Skullz #${skullz_id}</span>`;
+    skullz_elem.innerHTML = `<div class="${rarity_class} rank">${skullz_obj["rank"]}</div> <span class="underline">Skullz #${pad_zeros(skullz_id)}</span>`;
     skullz_list_elem.appendChild(skullz_elem);
 
     skullz_elem.addEventListener("click", function() {
       set_selected(this);
-      const token_id = pad_zeros(skullz_id);
-      document.getElementById("token-id").value = token_id;
-      document.getElementById("skullz-id").innerText = token_id;
-      // fetch_nft_attr(token_id);
+      document.getElementById("token-id").value = skullz_id;
+      document.getElementById("skullz-id").innerText = skullz_id;
       get_nft_attr();
       document.getElementById("skullz-id").scrollIntoView();
     });

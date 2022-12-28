@@ -1,7 +1,19 @@
+/* NFT Viewer for @MadSkullz_NFT */
+/* Author: @entropy_8_ */
+
 body {
     max-width: 860px !important;
     margin: auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-title {
+    width: 99%;
+    text-align: center;
+}
+
+.theme-btn {
+    float: right;
 }
 
 .flex {
@@ -36,9 +48,11 @@ body {
 .search-input {
     border: 1px solid #bebebe;
     border-radius: 3px !important;
-    margin-left: 92px;
+    margin-left: 88px;
     margin-right: 5px;
+    padding: 0.5em;
     width: 42%;
+    height: 1.25em;
     font-size: 16px !important;
 }
 .search-input:focus {
@@ -48,6 +62,7 @@ body {
 .search-button {
     font-size: 16px;
     border: none;
+    border-radius: 3px !important;
     text-align: center;
     background-color: #e7e7e7;
     padding: 8px;
@@ -81,6 +96,7 @@ body {
 .rarity-forgottenz,
 .rarity-legendary {
     background-color: rgb(255 209 57);
+    color: black;
 }
 
 .rank {
@@ -112,10 +128,13 @@ body {
     padding: 5px;
 }
 
+.trait-value {
+    text-decoration: underline;
+}
+
 .token-index-box {
     margin-top: -25px;
-    padding-left: 7.2em;
-    font-weight: bold;
+    padding-left: 7.3em;
     font-size: 16px;
 }
 
@@ -127,21 +146,22 @@ body {
     margin-top: 5px;
     color:#827d7d;
 }
+.padding-right-075 {
+    padding-right: 0.75em;
+}
 
 .hidden {
     display: none !important;
 }
 
-.skullz-textarea {
-    height:250px;
-    width:250px;
-    resize:none;
+.skullz-list-box {
+    margin-top: 2em;
 }
 
 .skullz-list {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 2em;
+    margin-top: 1em;
     height: 210px;
     overflow-y: auto;
     scrollbar-color: #bebebe;
@@ -151,22 +171,24 @@ body {
 .skullz-count-header {
     display:block;
     width: 100%;
-    font-weight: bolder;
     text-align: center;
 }
 
 .skullz-count-header .rarity {
     margin: 0em 0.1em 0.2em 0.2em;
-    padding: 0.1em;
     border-radius: 3px;
     text-align: center;
+}
+
+.skullz-count-header .counter {
+    font-size: 20px;
 }
 
 .skullz-list-item {
     display: flex;
     margin: 1px;
     padding: 3px;
-    width: 22%;
+    width: 23%;
     border: 1px solid #bebebe;
     border-radius: 3px;
 }
@@ -176,10 +198,34 @@ body {
     padding: 0.1em;
     margin-right: 0.1em;
     border-radius: 6px;
-    /* text-align: center; */
 }
 
 .selected {
     background-color: #d9d3d3;
     border-radius: 3px;
+}
+
+.dark {
+    color: white;
+    background-color: #202325;
+}
+.dark .selected {
+    background-color: #ffffff53;
+    border-radius: 3px;
+}
+.dark .search-input {
+    background-color: #ffffff00;
+    color: white;
+}
+.dark .search-button {
+    background-color: #ffffffd0;
+}
+
+.dark .traits-table,
+.dark .traits-header {
+    background-color: #ffffff0d;
+}
+
+.bg-clear {
+    background-color: #ffffff0d;
 }
