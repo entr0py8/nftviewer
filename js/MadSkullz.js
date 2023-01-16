@@ -5,6 +5,8 @@ const base_url = "https://cdn.madskullz.io/madskullz/metadata/";
 const NFT_count = 6666;
 
 window.addEventListener("load", function () {
+  process_params(get_query_params());
+
   const search_input_elem = document.getElementById("token-id");
   search_input_elem.focus();
   search_input_elem.addEventListener("keydown", function (evt) {
@@ -27,6 +29,48 @@ window.addEventListener("load", function () {
 
 });
 
+function get_query_params() {
+  const url_parser = new URL(this.document.URL);
+  const params_str = url_parser.search.split("?")[1];
+
+  if (params_str) {
+    params = new URLSearchParams(params_str);
+    for (let pair of params.entries()) {
+      let first_param = {
+        "key": pair[0].toLowerCase(),
+        "value": pair[1].toLowerCase(),
+      }
+      return first_param;
+    }
+  }
+
+  return undefined;
+}
+
+function process_params(param) {
+  if (param == undefined) {
+    return;
+  }
+
+  let token_elem = document.getElementById("token-id");
+
+  // Search by SKullz ID
+  if (param["key"] === "skullz") {
+    token_elem.value = param["value"];
+  }
+  // Search by Token ID
+  else if (param["key"] === "token") {
+    token_elem.value = param["value"] + "t";
+  }
+  // Search by Token ID
+  else if (param["key"] === "rank") {
+    token_elem.value = param["value"] + "r";
+  }
+
+  get_nft_attr(true);
+
+}
+
 function get_nft_attr(reset_list=false) {
 
   let skullz_id = undefined;
@@ -35,8 +79,8 @@ function get_nft_attr(reset_list=false) {
   let token_elem = document.getElementById("token-id");
   let token_info = token_elem.value;
 
-  let tsearch1 = token_info.match(/t\d{1,4}/i);
-  let tsearch2 = token_info.match(/\d{1,4}t/i);
+  let tsearch1 = token_info.match(/^t\d{1,4}/i);
+  let tsearch2 = token_info.match(/^\d{1,4}t/i);
   let is_token_index = tsearch1 || tsearch2;
   if (tsearch1) {
     token_info = tsearch1[0].replace(/\D/g, "");
@@ -45,7 +89,10 @@ function get_nft_attr(reset_list=false) {
     token_info = tsearch2[0].replace(/\D/g, "");
   }
 
+  let rsearch = token_info.match(/^r\d{1,4}/i) || token_info.match(/^\d{1,4}r/i);
   document.getElementById("token-unrevealed").classList.add("hidden");
+  document.getElementById("token-not-found").classList.add("hidden");
+
   if (is_token_index) {
     token_index = trim_zeros(token_info);
     if (SKULLZ_IDS[token_index] != undefined) {
@@ -54,7 +101,22 @@ function get_nft_attr(reset_list=false) {
     else {
       document.getElementById("missing-onez").innerText = `${token_index}`;
       document.getElementById("token-unrevealed").classList.remove("hidden");
+      document.getElementById("token-not-found").classList.add("hidden");
     }
+  }
+  else if (rsearch) {
+    const rank = token_info.replace(/\D/g, "");
+    skullz_id = search_rank(rank);
+
+    if (skullz_id == undefined) {
+      document.getElementById("token-not-found").classList.remove("hidden");
+      document.getElementById("token-unrevealed").classList.add("hidden");
+      document.getElementById("skullz-info").classList.add("hidden");
+      document.getElementById("skullz-list-box").classList.add("hidden");
+      return;
+    }
+    skullz_id = pad_zeros(skullz_id);
+    token_index = search_token_index(skullz_id);
   }
   else {
     token_info = token_info.replace(/\D/g, "");
@@ -202,11 +264,23 @@ function search_traits(trait) {
   return skullz_list;
 }
 
+function search_rank(rank) {
+  let skullz_id = undefined;
+
+  for (const sid in SKULLZ_DATA) {
+    if (SKULLZ_DATA[sid]["rank"] == rank) {
+      skullz_id = sid
+    }
+  }
+
+  return skullz_id;
+}
+
 function show_traits_list(trait_value, trait_rarity, skullz_list) {
   let skullz_list_elem = document.getElementById("skullz-list");
   skullz_list_elem.innerHTML = "";
   const trait_class = "rarity-" + trait_rarity.toLowerCase();
-  let skullz_count_elem = document.getElementById("skullz-count-header"); 
+  let skullz_count_elem = document.getElementById("skullz-count-header");
   skullz_count_elem.innerHTML = `Total Skullz with <span class="${trait_class} rarity">${trait_value}</span>: <span class="counter">${skullz_list.length}</span>`;
 
   skullz_list.forEach(function(skullz_id, index, array) {
