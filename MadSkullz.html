@@ -6,9 +6,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/MadSkullz.min.css">
     <script src="js/SkullzData.js"></script>
-    <script src="js/SkullzIDs.js"></script>
+    <script src="js/SkullzIDs.js?v0.4"></script>
     <script src="js/SkullzTraits.js"></script>
-    <script src="js/MadSkullz.min.js?v0.3.2"></script>
+    <script src="js/MadSkullz.min.js?v0.4"></script>
   </head>
 
   <body class="dark">
@@ -18,9 +18,18 @@
     </div>
     <div>
       <div class="flex center-content">
-        <input id="token-id" class="search-input" placeholder="Input Skullz-ID (1234) or Token-ID (1234t or t1234)">
+        <input id="token-id" class="search-input" placeholder="">
         <button class="search-button" onclick="get_nft_attr();">Show NFT</button>
       </div>
+      <div id="how-to" class="flex center-content guide">
+        <ul>
+          <li>To search by MadSkullz ID: input number, e.g., 666</li>
+          <li>To search by Token ID: input number with prefix/postfix "t", e.g., 66t</li>
+          <li>To search by Rank: input rank with prefix/postfix "r", e.g., 66r</li>
+          <li>To search by Trait: input trait name, e.g., Avax</li>
+        </ul>
+      </div>
+
       <div id="token-unrevealed" class="token-warn center hidden">Token #<span id="missing-onez"></span> is still hidden in The Missing Onez <span><img src="./images/madskullz.png"></span></div>
       <div id="token-not-found" class="token-warn center hidden">There is no such token.</div>
     </div>
