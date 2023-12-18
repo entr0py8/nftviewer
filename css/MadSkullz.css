@@ -68,6 +68,10 @@ body {
     padding: 8px;
 }
 
+.guide {
+    margin-left: 88px;
+}
+
 .rarity-box {
     margin: 20px 0px 20px 0px;
     padding: 10px;
@@ -112,7 +116,7 @@ body {
 .traits-table {
     background-color: #e9e3e3;
     border-spacing: 0;
-    min-width: 50%;
+    min-width: 56%;
 }
 
 .traits-header {
@@ -130,6 +134,7 @@ body {
 
 .trait-value {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .token-index-box {
@@ -191,6 +196,7 @@ body {
     width: 23%;
     border: 1px solid #bebebe;
     border-radius: 3px;
+    cursor: pointer;
 }
 
 .skullz-list-item > .rank {
